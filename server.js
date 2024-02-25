@@ -8,6 +8,9 @@ const cors = require('cors')
 //Connect to the database
 require('./config/db')
 
+//compression
+const compression = require("compression")
+app.use(compression())
 
 
 // create user collection
