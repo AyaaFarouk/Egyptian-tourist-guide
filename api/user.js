@@ -466,18 +466,5 @@ router.post("/detect", upload.single("image"), async (req, res) => {
     }
 });
 //-------------------------------------------------------------------------------------------------
-//Say 
-/*const say = require('say')
-router.get('/Ramsses', async (req, res) => {
-    say.speak("information about statue The Statue of Ramesses II, also known as Ramesses the Great who ruled Egypt during the 19th dynasty from 1279 to 1213 BC Here are some details about this statue: Material:  The statue is made of red granite Height The statue stands about 3.6 meters 12 feet tall Discovery The statue was discovered in several fragments by archaeologists working in Heliopolis in the 19th century. It was later reassembled. Significance The Statue of Ra Ramesses II is significant for several reasons. It is a powerful symbol of the might and grandeur of the New Kingdom of Egypt, particularly during the reign of Ramesses II, who is often regarded as one of Egypt's greatest pharaohs. information about Ramsses II's life ramses II ascended the throne at the young age of 25 and ruled for an impressive 66 years, making his reign one of the longest in ancient egyptian history. he was known for his military prowess and led several military campaigns in Nubia, Syria, and Canaan, defeated the enigmatic Sea People in a naval battle in the Nile Delta, and claimed victory over Egypt's Hittite rivals in the Battle of Kadesh a conflict that ended with the signing of the world's first treaty Beyond his military achievements, Ramsses II is also renowned for his monumental building projects. he initiated numerous construction project throughout egypt, including the famous temples of Abu Simbel, the Ramesseum, and the temple of Ramsses II. these grand structures were intended to showcase his power and reinforce the image of egyptian strength and prosperity Ramsses II also known for his extensive family, he had a large number of wives, including the renowned queen Nefertari, and numerous children, his family played an important role in his reign, and he took great care to secure their positions and create a dynasty that would last for generations")
-});
-
-router.get('/Khafre', async (req, res) => {
-    say.speak("- information about statue The Statue of Khafre, also known as the “khafre enthroned”,  who ruled Egypt during the Fourth Dynasty of the Old Kingdom period, from 2559 to 2535 BC. Here are some details about this statue: Material: The statue is made of diorite, a hard, dark-grey to black volcanic rock. Height: It stands at about 168 cm (5 feet 6 inches) tall. Depiction: The statue depicts Khafre wearing the nemes headcloth with the royal cobra on his forehead. Discover: The statue was discovered in 1860 during excavations near the Great Sphinx of Giza in Egypt. - information about Khafre's life Khafre was the son of Pharaoh Khufu who built the Great Pyramid of Giza, Khafre married his sister Khamerernebti, Meresankh III, and perhaps two other queens. Khafre's reign is known for its monumental building projects, including the construction of the second-largest pyramid at Giza, known as the Pyramid of Khafre. This pyramid complex also includes the Great Sphinx, a colossal limestone statue with the body of a lion and the head of a pharaoh,  which many consider to bear Khafre’s features. In addition to his pyramid complex at Giza, Khafre is credited with building several other monuments, including temples and tombs in the vicinity of Giza and in other parts of Egypt. Khafre was succeeded by his son Menkaure, who continued the tradition of pyramid building at Giza.")
-});
-
-router.get('/Tutankhamun', async (req, res) => {
-    
-});*/
 
 module.exports = router;
