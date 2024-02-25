@@ -7,7 +7,9 @@ const cors = require('cors')
 
 //Connect to the database
 require('./config/db')
-
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '90mb' }));
+app.use(bodyParser.urlencoded({ limit: '90mb', extended: true }));
 
 
 // create user collection

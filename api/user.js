@@ -423,6 +423,7 @@ router.post('/signin', (req,res)=>{
 const fs = require("fs");
 const axios = require("axios");
 const multer = require('multer')
+const bodyParser = require('body-parser');
 
 const storage = multer.diskStorage({
     destination : function(req, file, cb){
