@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-var port = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
 //to connect frontend
 const cors = require('cors')
@@ -8,9 +8,7 @@ const cors = require('cors')
 //Connect to the database
 require('./config/db')
 
-//COMPRESS ALL RESPONSES
-const compression = require("compression")
-app.use(compression())
+
 
 // create user collection
 const UserRouter = require('./api/user')

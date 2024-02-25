@@ -53,14 +53,13 @@ transporter.verify((error,success) => {
 //----------------------------------------------------------------------------------
 //Signup
 router.post('/signup', (req,res)=>{
-    let {name, email, password, dateOfBirth,role} = req.body;
+    let {name, email, password,role} = req.body;
     name = name.trim();
     email = email.trim();
     password = password.trim();
-    dateOfBirth = dateOfBirth.trim();
     
 
-    if(name == "" || email == "" || password == "" || dateOfBirth == "")
+    if(name == "" || email == "" || password == "" )
     {
         res.json({
             status: "FAILED",
@@ -80,13 +79,6 @@ router.post('/signup', (req,res)=>{
             status: "FAILED",
             message: "Invalid email entered" 
         });
-    }
-    else if(!new Date(dateOfBirth).getTime())
-    {
-        res.json({
-            status: "FAILED",
-            message: "Invalid date of birth entered" 
-        })
     }
     else if (password.length < 8)
     {
@@ -118,7 +110,6 @@ router.post('/signup', (req,res)=>{
                         name,
                         email,
                         password:hashedPassword,
-                        dateOfBirth,
                         role,
                         verified:false
                     });
@@ -455,7 +446,7 @@ router.post("/detect", upload.single("image"), async (req, res) => {
         // Make a POST request to the Roboflow API
         const response = await axios({
             method: "POST",
-            url: "https://detect.roboflow.com/ramsis/2",
+            url: "https://detect.roboflow.com/monuments-detection/3",
             params: {
                 api_key: "gBGAOaROepf97ZEZH36I"
             },
