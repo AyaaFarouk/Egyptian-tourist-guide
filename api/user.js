@@ -436,7 +436,7 @@ const storage = multer.diskStorage({
 
 });
 // Set up Multer to handle file uploads
-const upload = multer();
+const upload = multer({ storage : storage });
 
 // Define a route handler for POST requests to '/detect'
 router.post("/detect", upload.single("image"), async (req, res) => {
