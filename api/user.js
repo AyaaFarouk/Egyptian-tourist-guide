@@ -439,7 +439,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage : storage });
 
 // Define a route handler for POST requests to '/detect'
-/*router.post("/detect", upload.single("image"), async (req, res) => {
+router.post("/detect", upload.single("image"), async (req, res) => {
     try {
         // Read image file asynchronously from request body
         const image = fs.readFileSync(req.file.path, { encoding: "base64" });
@@ -465,10 +465,10 @@ const upload = multer({ storage : storage });
         console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
-});*/
-
+});
+//-------------------------------------------------
 // Define a route handler for POST requests to '/detect'
-router.post("/detectCam", upload.single("image"), async (req, res) => {
+/*router.post("/detectCam", upload.single("image"), async (req, res) => {
     try {
         // Get the base64-encoded image string from the request body
         const image = req.body.image;
@@ -494,8 +494,12 @@ router.post("/detectCam", upload.single("image"), async (req, res) => {
         console.log(error.message);
         res.status(500).send("Internal Server Error");
     }
-});
+});*/
+
 //-------------------------------------------------------------------------------------------------
+router.post("/up",upload.single("image"),(req,res)=>{
+    res.status(200).json({message:"Image uploaded"});
+})
 
 
 module.exports = router;
