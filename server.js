@@ -5,11 +5,17 @@ const port = process.env.PORT ;
 //to connect frontend
 const cors = require('cors')
 
+//compression
+const compression = require("compression")
+app.use(compression())
+
 //Connect to the database
 require('./config/db')
 const bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '90mb' }));
-app.use(bodyParser.urlencoded({ limit: '90mb', extended: true }));
+app.use(bodyParser.json({ limit: '10000mb' }));
+app.use(bodyParser.urlencoded({ limit: '10000mb', extended: true }));
+
+
 
 
 // create user collection
