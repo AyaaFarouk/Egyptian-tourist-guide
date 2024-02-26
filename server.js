@@ -12,8 +12,8 @@ app.use(compression())
 //Connect to the database
 require('./config/db')
 const bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '20000mb' }));
-app.use(bodyParser.urlencoded({ limit: '20000mb', extended: true }));
+//app.use(bodyParser.json({ limit: '20000mb' }));
+//app.use(bodyParser.urlencoded({ limit: '20000mb', extended: true }));
 
 
 
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ limit: '20000mb', extended: true }));
 const UserRouter = require('./api/user')
 app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, parameterLimit:200000,limit:"1000mb" }));
 
 app.use('/user',UserRouter)
 
