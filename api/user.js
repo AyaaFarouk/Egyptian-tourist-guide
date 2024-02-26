@@ -436,7 +436,7 @@ const storage = multer.diskStorage({
 
 });
 // Set up Multer to handle file uploads
-const upload = multer({ storage : storage });
+const upload = multer();
 
 // Define a route handler for POST requests to '/detect'
 router.post("/detect", upload.single("image"), async (req, res) => {
@@ -467,5 +467,33 @@ router.post("/detect", upload.single("image"), async (req, res) => {
     }
 });
 //-------------------------------------------------------------------------------------------------
+// Define a route handler for POST requests to '/detect'
+router.post("/detectCam", upload.single("image"), async (req, res) => {
+    try {
+        // Get the base64-encoded image string from the request body
+        const image = req.body.image;
+
+        // Make a POST request to the Roboflow API
+        const response = await axios({
+            method: "POST",
+            url: "https://detect.roboflow.com/monuments-detection/3",
+            params: {
+                api_key: "gBGAOaROepf97ZEZH36I"
+            },
+            data: image,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        });
+
+        // Send the response from the API to the client
+        res.send(response.data);
+    } 
+    catch (error) {
+        // Handle errors
+        console.log(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 module.exports = router;
