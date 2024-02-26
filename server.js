@@ -12,8 +12,8 @@ app.use(compression())
 //Connect to the database
 require('./config/db')
 const bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '10000mb' }));
-app.use(bodyParser.urlencoded({ limit: '10000mb', extended: true }));
+app.use(bodyParser.json({ limit: '20000mb' }));
+app.use(bodyParser.urlencoded({ limit: '20000mb', extended: true }));
 
 
 
