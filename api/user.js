@@ -53,7 +53,7 @@ transporter.verify((error,success) => {
 //----------------------------------------------------------------------------------
 //Signup
 router.post('/signup', (req,res)=>{
-    let {name, email, password,role} = req.body;
+    let {userId,name, email, password,role} = req.body;
     name = name.trim();
     email = email.trim();
     password = password.trim();
@@ -107,6 +107,7 @@ router.post('/signup', (req,res)=>{
                 const saltRounds = 10;
                 bcrypt.hash(password,saltRounds).then(hashedPassword => {
                     const newUser = new user({
+                        userId,
                         name,
                         email,
                         password:hashedPassword,
@@ -379,7 +380,8 @@ router.post('/signin', (req,res)=>{
                     bcrypt.compare(password,hashedPassword).then(result =>{
                         if(result){
                             //password match 
-                            const token = jwt.sign({ userId: data[0]._id }, process.env.secretKey);
+                            const token = jwt.sign({ userId: data[0]._id }, process.env.secretKey, { expiresIn: '1h' });
+                           // req.session.token = token;
                             res.json({
                                 status: "SUCCESS",
                                 message: "Signin successful",
@@ -418,16 +420,21 @@ router.post('/signin', (req,res)=>{
 
 })
 //------------------------------------------------------------
+router.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.json({ message: 'Logout successful' });
+  });
+
+//------------------------------------------------------
 
 //detect by upload image
 const fs = require("fs");
 const axios = require("axios");
 const multer = require('multer')
-const bodyParser = require('body-parser');
 
 const storage = multer.diskStorage({
     destination : function(req, file, cb){
-        cb(null,'/tmp')
+        cb(null,'./uploads/')
     },
 
     filename : function(req, file, cb ){
@@ -439,8 +446,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage : storage });
 
 // Define a route handler for POST requests to '/detect'
-router.post("/detect", upload.single("image"), async (req, res) => {
+router.post("/detect/:userId", upload.single("image"), async (req, res) => {
     try {
+        const { userId } = req.params;
+
+        // Check if the user exists
+         const existingUser = await user.findById(userId);
+        if (!existingUser) {
+         return res.status(404).json({ error: 'User not found' });
+           }
         // Read image file asynchronously from request body
         const image = fs.readFileSync(req.file.path, { encoding: "base64" });
 
@@ -466,40 +480,6 @@ router.post("/detect", upload.single("image"), async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-//-------------------------------------------------
-// Define a route handler for POST requests to '/detect'
-/*router.post("/detectCam", upload.single("image"), async (req, res) => {
-    try {
-        // Get the base64-encoded image string from the request body
-        const image = req.body.image;
-
-        // Make a POST request to the Roboflow API
-        const response = await axios({
-            method: "POST",
-            url: "https://detect.roboflow.com/monuments-detection/3",
-            params: {
-                api_key: "gBGAOaROepf97ZEZH36I"
-            },
-            data: image,
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        });
-
-        // Send the response from the API to the client
-        res.send(response.data);
-    } 
-    catch (error) {
-        // Handle errors
-        console.log(error.message);
-        res.status(500).send("Internal Server Error");
-    }
-});*/
-
 //-------------------------------------------------------------------------------------------------
-router.post("/up",upload.single("image"),(req,res)=>{
-    res.status(200).json({message:"Image uploaded"});
-})
-
 
 module.exports = router;

@@ -1,20 +1,12 @@
 const express = require('express')
 const app = express()
-const port = process.env.PORT ;
+const port =  5000;
 
 //to connect frontend
 const cors = require('cors')
 
-//compression
-const compression = require("compression")
-app.use(compression())
-
 //Connect to the database
 require('./config/db')
-const bodyParser = require('body-parser');
-//app.use(bodyParser.json({ limit: '20000mb' }));
-//app.use(bodyParser.urlencoded({ limit: '20000mb', extended: true }));
-
 
 
 
@@ -22,7 +14,7 @@ const bodyParser = require('body-parser');
 const UserRouter = require('./api/user')
 app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded({ extended: true, parameterLimit:200000,limit:"1000mb" }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/user',UserRouter)
 
