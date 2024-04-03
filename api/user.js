@@ -446,7 +446,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage : storage });
 
 // Define a route handler for POST requests to '/detect'
-router.post("/detect/:userId", upload.single("image"), async (req, res) => {
+router.post("/detect", upload.single("image"), async (req, res) => {
     try {
         const { userId } = req.params;
 
