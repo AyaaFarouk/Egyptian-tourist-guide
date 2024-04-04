@@ -448,13 +448,13 @@ const upload = multer({ storage : storage });
 // Define a route handler for POST requests to '/detect'
 router.post("/detect", upload.single("image"), async (req, res) => {
     try {
-        const { userId } = req.params;
+        //const { userId } = req.params;
 
         // Check if the user exists
-         const existingUser = await user.findById(userId);
-        if (!existingUser) {
-         return res.status(404).json({ error: 'User not found' });
-           }
+        // const existingUser = await user.findById(userId);
+       // if (!existingUser) {
+         //return res.status(404).json({ error: 'User not found' });
+         //  }
         // Read image file asynchronously from request body
         const image = fs.readFileSync(req.file.path, { encoding: "base64" });
 
