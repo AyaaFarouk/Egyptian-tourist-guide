@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port =   process.env.PORT ;
+const port =  5000;
 
 //to connect frontend
 const cors = require('cors')

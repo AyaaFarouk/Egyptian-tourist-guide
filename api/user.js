@@ -435,7 +435,7 @@ const bodyParser = require('body-parser');
 
 const storage = multer.diskStorage({
     destination : function(req, file, cb){
-        cb(null,'/tmp')
+        cb(null,'./tmp/')
     },
 
     filename : function(req, file, cb ){
@@ -475,5 +475,68 @@ router.post("/detect", upload.single("image"), async (req, res) => {
     }
 });
 //-------------------------------------------------------------------------------------------------
+//OCR API
+
+
+/*router.post("/ocr", upload.single("image"), async (req, res) => {
+   try 
+   {
+// Read image file asynchronously from request body
+ const image = fs.readFileSync(req.file.path, { encoding: "base64" });
+
+
+
+const response = await axios ({
+  method: 'POST',
+  url: 'https://ocr-wizard.p.rapidapi.com/ocr',
+  headers: {
+    'content-type': 'application/x-www-form-urlencoded',
+    'X-RapidAPI-Key': 'd05a7a8449msh6595df6f7787603p1e2378jsndac0edf38919',
+    'X-RapidAPI-Host': 'ocr-wizard.p.rapidapi.com'
+  },
+  data: image,
+});
+         // Send the response from the API to the client
+         res.send(response.data);
+}
+
+catch (error) {
+	console.error(error.message);
+    res.status(500).send("Internal Server Error")
+}
+});*/
+
+
+
+
+const FormData = require('form-data');
+
+router.post('/ocr',upload.single("image"), async (req, res) => {
+  try {
+    const image = req.file;
+
+    const data = new FormData();
+    data.append('srcImg', fs.createReadStream(image.path));
+    data.append('Session', 'string');
+
+    const options = {
+      method: 'POST',
+      url: 'https://pen-to-print-handwriting-ocr.p.rapidapi.com/recognize/',
+      headers: {
+        'X-RapidAPI-Key': 'd05a7a8449msh6595df6f7787603p1e2378jsndac0edf38919',
+        'X-RapidAPI-Host': 'pen-to-print-handwriting-ocr.p.rapidapi.com',
+        ...data.getHeaders(),
+      },
+      data: data,
+    };
+
+    const response = await axios.request(options);
+    res.send(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 module.exports = router;
+
