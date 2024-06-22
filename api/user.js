@@ -5,7 +5,7 @@ const util = require('util')
 const AsyncAsign = util.promisify(jwt.sign)
 const lod = require('lodash')
 //server.js
-const server = require('../server')
+const server = require('../index')
 
 // mongodb user model
 const user = require('./../models/user');
