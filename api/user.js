@@ -380,11 +380,12 @@ router.post('/signin', (req,res)=>{
                     console.log(hashedPassword)
                     console.log(password)
                     bcrypt.compare(password,hashedPassword).then(result =>{
+                        console.log(password)
                         if(result){
                             //password match 
-                            const token = jwt.sign({ userId: data[0]._id }, process.env.secretKey, { expiresIn: '1h' });
+                            const secretKey = "OAABB"
+                            const token = jwt.sign({ userId: data[0]._id }, secretKey, { expiresIn: '1h' });
                             console.log(token)
-                            console.log(process.env.secretKey)
                             //console.log(userId)
                             console.log(data[0]._id)
                            // req.session.token = token;
