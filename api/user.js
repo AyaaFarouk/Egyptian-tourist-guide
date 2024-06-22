@@ -32,12 +32,14 @@ const { error } = require('console');
 //env variables
 require("dotenv").config()
 
+AUTH_EMAIL= "egyptiantourguide2024@gmail.com"
+AUTH_PASS= "lmcz rkrn xlbg jbqe"
 //nodemailer stuff
 let transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
+        user: AUTH_EMAIL,
+        pass: AUTH_PASS,
     },
 });
 
@@ -173,7 +175,7 @@ const sendVerificationEmail = ({_id, email},res) => {
 
     //mail options 
     const mailOptions = {
-        from: process.env.AUTH_EMAIL,
+        from: AUTH_EMAIL,
         to: email,
         subject: "Verify Your Email",
         html: `<p>Verify your email with the code below</p><p style="color:tomato; font-size:25px; letter-spacing:2px;"><b>${generate}</b></p><p>This code <b>expires in 1 hour(s)</b>.</p>`,

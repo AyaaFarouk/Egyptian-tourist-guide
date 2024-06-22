@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
-//const port =  process.env.PORT;
-const port =  5000;
+const port =  process.env.PORT;
+//const port =  5000;
 //to connect frontend
 const cors = require('cors')
 
@@ -44,11 +44,13 @@ const util = require('util')
 const AsyncAsign = util.promisify(jwt.sign)
 
 //nodemailer stuff
+AUTH_EMAIL="egyptiantourguide2024@gmail.com"
+AUTH_PASS="lmcz rkrn xlbg jbqe"
 let transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS,
+        user: AUTH_EMAIL,
+        pass: AUTH_PASS,
     },
 });
 
@@ -131,7 +133,7 @@ const sendResetEmail = ({_id,email},res) => {
                     //Now we send the email
                     //mail options
                     const mailOptions = {
-                        from: process.env.AUTH_EMAIL,
+                        from: AUTH_EMAIL,
                         to: email,
                         subject: "Password Reset",
                         html: `<p>We heard that you lost the password.</p> <p>Don't worry, use the code below to reset it.</p> <p style="color:tomato; font-size:25px; letter-spacing:2px;"><b>${generate}</b></p><p>This code <b>expires in 1 hour(s)</b>.</p>`,
