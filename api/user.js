@@ -383,6 +383,10 @@ router.post('/signin', (req,res)=>{
                         if(result){
                             //password match 
                             const token = jwt.sign({ userId: data[0]._id }, process.env.secretKey, { expiresIn: '1h' });
+                            console.log(token)
+                            console.log(process.env.secretKey)
+                            //console.log(userId)
+                            console.log(data[0]._id)
                            // req.session.token = token;
                             res.json({
                                 status: "SUCCESS",
