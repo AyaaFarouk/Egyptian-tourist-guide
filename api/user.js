@@ -377,6 +377,8 @@ router.post('/signin', (req,res)=>{
                     });
                 }else{
                     const hashedPassword = data[0].password;
+                    console.log(hashedPassword)
+                    console.log(password)
                     bcrypt.compare(password,hashedPassword).then(result =>{
                         if(result){
                             //password match 
@@ -395,12 +397,7 @@ router.post('/signin', (req,res)=>{
                             })
                         }
                     })
-                .catch(err => {
-                    res.json({
-                        status:"FAILED",
-                        message:"An error occurred while comparing passwords"
-                    })
-                })
+        
                 }
                 
             }else{
