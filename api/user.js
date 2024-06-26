@@ -541,6 +541,58 @@ router.post('/ocr',upload.single("image"), async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+//----------------------------------------------------------------------------
+//Face Swap
+// Replace with your imgbb API key
+const imgbbAPIKey = 'fe8b5ffd5a7a8afa78123aeab8d4f6e4';
+  
+const uploadToImgbb = async (filePath) => {
+  const form = new FormData();
+  form.append('image', fs.createReadStream(filePath));
 
+  const response = await axios.post(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, form, {
+    headers: {
+      ...form.getHeaders(),
+    },
+  });
+
+  return response.data.data.url;
+};
+
+router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
+  try {
+    const targetImage = req.files['TargetImage'][0];
+    const sourceImage = req.files['SourceImage'][0];
+
+    const targetImageUrl = await uploadToImgbb(targetImage.path);
+    const sourceImageUrl = await uploadToImgbb(sourceImage.path);
+
+    const options = {
+      method: 'POST',
+      url: 'https://faceswap-image-transformation-api.p.rapidapi.com/faceswapgroup',
+      headers: {
+        'x-rapidapi-key': 'd05a7a8449msh6595df6f7787603p1e2378jsndac0edf38919',
+        'x-rapidapi-host': 'faceswap-image-transformation-api.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        TargetImageUrl: targetImageUrl,
+        SourceImageUrl: sourceImageUrl,
+        MatchGender: true,
+        MaximumFaceSwapNumber: 5
+      }
+    };
+
+    const response = await axios.request(options);
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while processing the request' });
+  } finally {
+    // Clean up uploaded files
+    fs.unlinkSync(req.files['TargetImage'][0].path);
+    fs.unlinkSync(req.files['SourceImage'][0].path);
+  }
+});
 module.exports = router;
 
