@@ -32,8 +32,8 @@ const { error } = require('console');
 //env variables
 require("dotenv").config()
 
-AUTH_EMAIL= "egyptiantourguide2024@gmail.com"
-AUTH_PASS= "lmcz rkrn xlbg jbqe"
+const AUTH_EMAIL= "egyptiantourguide2024@gmail.com"
+const AUTH_PASS= "lmcz rkrn xlbg jbqe"
 //nodemailer stuff
 let transporter = nodemailer.createTransport({
     service:"gmail",
@@ -524,15 +524,15 @@ router.post('/ocr',upload.single("image"), async (req, res) => {
     data.append('Session', 'string');
 
     const options = {
-      method: 'POST',
-      url: 'https://pen-to-print-handwriting-ocr.p.rapidapi.com/recognize/',
-      headers: {
-        'X-RapidAPI-Key': 'd05a7a8449msh6595df6f7787603p1e2378jsndac0edf38919',
-        'X-RapidAPI-Host': 'pen-to-print-handwriting-ocr.p.rapidapi.com',
-        ...data.getHeaders(),
-      },
-      data: data,
-    };
+        method: 'POST',
+        url: 'https://pen-to-print-handwriting-ocr.p.rapidapi.com/recognize/',
+        headers: {
+          'x-rapidapi-key': '15ff027daamshe9b696d3d9378b2p17dfc9jsnca292b160be3',
+          'x-rapidapi-host': 'pen-to-print-handwriting-ocr.p.rapidapi.com',
+          ...data.getHeaders(),
+        },
+        data: data
+      };
 
     const response = await axios.request(options);
     res.send(response.data);

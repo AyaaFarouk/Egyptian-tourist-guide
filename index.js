@@ -44,8 +44,8 @@ const util = require('util')
 const AsyncAsign = util.promisify(jwt.sign)
 
 //nodemailer stuff
-AUTH_EMAIL="egyptiantourguide2024@gmail.com"
-AUTH_PASS="lmcz rkrn xlbg jbqe"
+const AUTH_EMAIL="egyptiantourguide2024@gmail.com"
+const AUTH_PASS="lmcz rkrn xlbg jbqe"
 let transporter = nodemailer.createTransport({
     service:"gmail",
     auth:{
