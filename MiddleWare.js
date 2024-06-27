@@ -99,6 +99,7 @@ const LoginUser = async (req, res) => {
 const AuthorizeUser = async (req, res, next) => {
     // Retrieve the token from the cookie
     const token = req.cookies.token;
+    console.log("Login: (in Cookies) "+ token)
     if (!token) return res.status(400).send('Access denied.');
 
     try {
@@ -113,6 +114,7 @@ const AuthorizeUser = async (req, res, next) => {
 const Logout = async (req, res) => {
     // Retrieve the token from the Authorization header
     const token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
+    console.log("LogOut (in header): "+token)
     if (!token) return res.status(400).send('Access denied. No token provided.');
 
     try {
