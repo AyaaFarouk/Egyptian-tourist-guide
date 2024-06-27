@@ -114,7 +114,8 @@ router.post('/signup', (req,res)=>{
                         email,
                         password:hashedPassword,
                         role,
-                        verified:false
+                        verified:false,
+                        adminRole:false
                     });
 
                 newUser.save().then(result => {

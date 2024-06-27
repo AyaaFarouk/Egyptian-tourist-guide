@@ -1,22 +1,27 @@
 const express = require('express')
 const app = express()
-const port =  process.env.PORT;
-//const port =  5000;
+//const port =  process.env.PORT;
+const port =  5000;
 //to connect frontend
 const cors = require('cors')
 
 //Connect to the database
 require('./config/db')
 
-
+const cookieParser = require('cookie-parser');
+const { AuthorizeUser, Logout, LoginUser } = require('./MiddleWare');
 
 // create user collection
 const UserRouter = require('./api/user')
 app.use(cors())
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/user',UserRouter)
+
+app.post('/user/login', LoginUser);
+app.post('/user/logout', AuthorizeUser, Logout);
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // mongodb user model

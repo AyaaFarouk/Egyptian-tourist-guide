@@ -67,6 +67,9 @@ const UserSchema = new mongoose.Schema({
   dateOfBirth: {
     type: Date,
   },
+  adminRole: {
+    type: Boolean,
+  },
   verified: {
     type: Boolean,
   },
