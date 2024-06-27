@@ -97,9 +97,9 @@ const LoginUser = async (req, res) => {
 };
 
 const AuthorizeUser = async (req, res, next) => {
-    // Retrieve the token from the cookie
-    const token = req.cookies.token;
-    console.log("Login: (in Cookies) "+ token)
+  // Retrieve the token from the Authorization header
+  const token = req.header('Authorization')?.split(' ')[1];
+  console.log("Login: (in Header) " + token);
     if (!token) return res.status(400).send('Access denied.');
 
     try {
@@ -111,7 +111,7 @@ const AuthorizeUser = async (req, res, next) => {
     }
 };
 
-const Logout = async (req, res) => {
+/*const Logout = async (req, res) => {
     // Retrieve the token from the Authorization header
     const token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
     console.log("LogOut (in header): "+token)
@@ -153,4 +153,59 @@ module.exports = {
     AuthorizeUser,
     Logout,
     LoginUser,
+};*/
+
+
+
+/*const AuthorizeUser = async (req, res, next) => {
+  // Retrieve the token from the Authorization header
+  const token = req.header('Authorization')?.split(' ')[1];
+  console.log("Login: (in Header) " + token);
+
+  if (!token) return res.status(400).send('Access denied. No token provided.');
+
+  try {
+    const decoded = await asyncVerify(token, secretkey);
+    if (!decoded.adminRole) return res.status(400).send('Not Authorized');
+    next();
+  } catch (error) {
+    return res.status(401).send('Invalid token');
+  }
+};*/
+
+const Logout = async (req, res) => {
+  // Retrieve the token from the Authorization header
+  const token = req.header('Authorization')?.split(' ')[1];
+  console.log("LogOut (in header): " + token);
+
+  if (!token) return res.status(400).send('Access denied. No token provided.');
+
+  try {
+    const decoded = await asyncVerify(token, secretkey);
+
+    // Check if the token is valid
+    if (!decoded) {
+      return res.status(401).send('Invalid token');
+    }
+
+    // Revoke the token
+    await user.updateOne({ _id: decoded.userId }, { adminRole: false });
+
+    // Respond with the updated adminRole value
+    return res.status(200).json({
+      status: 'SUCCESS',
+      message: 'Logout successful',
+      adminRole: false
+    });
+  } catch (error) {
+    return res.status(401).send('Invalid token');
+  }
+};
+
+
+
+module.exports = {
+  AuthorizeUser,
+  Logout,
+  LoginUser
 };
