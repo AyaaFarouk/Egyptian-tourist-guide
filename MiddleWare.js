@@ -96,10 +96,10 @@ const LoginUser = async (req, res) => {
     }
 };
 
-const AuthorizeUser = async (req, res, next) => {
-  // Retrieve the token from the Authorization header
-  const token = req.header('Authorization')?.split(' ')[1];
-  console.log("Login: (in Header) " + token);
+/*const AuthorizeUser = async (req, res, next) => {
+    // Retrieve the token from the cookie
+    const token = req.cookies.token;
+    console.log("Login: (in Cookies) "+ token)
     if (!token) return res.status(400).send('Access denied.');
 
     try {
@@ -157,7 +157,7 @@ module.exports = {
 
 
 
-/*const AuthorizeUser = async (req, res, next) => {
+const AuthorizeUser = async (req, res, next) => {
   // Retrieve the token from the Authorization header
   const token = req.header('Authorization')?.split(' ')[1];
   console.log("Login: (in Header) " + token);
@@ -171,7 +171,7 @@ module.exports = {
   } catch (error) {
     return res.status(401).send('Invalid token');
   }
-};*/
+};
 
 const Logout = async (req, res) => {
   // Retrieve the token from the Authorization header
