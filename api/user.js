@@ -471,8 +471,11 @@ router.post("/detect", upload.single("image"), async (req, res) => {
         });
 
         // Process the response to check the top prediction confidence value
-        const { top, confidence } = response.data;
-        const result = confidence > 0.8 ? response.data : "null";
+        /*const { confidence } = response.data;
+        const result = confidence > 0.8 ? response.data : { result: null, confidence };*/
+            
+                const { top, confidence } = response.data;
+                const result = confidence > 0.8 ? response.data : "null";
 
         // Send the processed result to the client
         res.send(result);
@@ -564,7 +567,7 @@ const uploadToImgbb = async (filePath) => {
   return response.data.data.url;
 };
 
-router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
+/*router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
   try {
     const targetImage = req.files['TargetImage'][0];
     const sourceImage = req.files['SourceImage'][0];
@@ -598,6 +601,42 @@ router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'Source
     fs.unlinkSync(req.files['TargetImage'][0].path);
     fs.unlinkSync(req.files['SourceImage'][0].path);
   }
+});*/
+router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
+  try {
+    const targetImage = req.files['TargetImage'][0];
+    const sourceImage = req.files['SourceImage'][0];
+
+    const targetImageUrl = await uploadToImgbb(targetImage.path);
+    const sourceImageUrl = await uploadToImgbb(sourceImage.path);
+
+    const options = {
+      method: 'POST',
+      url: 'https://faceswap-image-transformation-api.p.rapidapi.com/faceswapgroup',
+      headers: {
+        'x-rapidapi-key': '97f591d464mshd213f9f039d30e6p16db87jsn939d9d6414b9',
+        'x-rapidapi-host': 'faceswap-image-transformation-api.p.rapidapi.com',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        TargetImageUrl: targetImageUrl,
+        SourceImageUrl: sourceImageUrl,
+        MatchGender: true,
+        MaximumFaceSwapNumber: 5
+      }
+    };
+
+    const response = await axios.request(options);
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while processing the request' });
+  } finally {
+    // Clean up uploaded files
+    fs.unlinkSync(targetImage.path);
+    fs.unlinkSync(sourceImage.path);
+  }
 });
+
 module.exports = router;
 
