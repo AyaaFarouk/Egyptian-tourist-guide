@@ -460,9 +460,9 @@ router.post("/detect", upload.single("image"), async (req, res) => {
         // Make a POST request to the Roboflow API
         const response = await axios({
             method: "POST",
-            url: "https://detect.roboflow.com/monuments-detection/3",
+            url: "https://classify.roboflow.com/oe-stat2/1",
             params: {
-                api_key: "gBGAOaROepf97ZEZH36I"
+                api_key: "0H9DYFvGrPNR6It6xujZ",
             },
             data: image,
             headers: {
@@ -470,8 +470,12 @@ router.post("/detect", upload.single("image"), async (req, res) => {
             }
         });
 
-        // Send the response from the API to the client
-        res.send(response.data);
+        // Process the response to check the top prediction confidence value
+        const { top, confidence } = response.data;
+        const result = confidence > 0.8 ? response.data : "null";
+
+        // Send the processed result to the client
+        res.send(result);
     } 
     catch (error) {
         // Handle errors
