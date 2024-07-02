@@ -471,11 +471,11 @@ router.post("/detect", upload.single("image"), async (req, res) => {
         });
 
         // Process the response to check the top prediction confidence value
-        /*const { confidence } = response.data;
-        const result = confidence > 0.8 ? response.data : { result: null, confidence };*/
+        const { confidence } = response.data;
+        const result = confidence > 0.8 ? response.data : { top: "null", confidence };
             
-                const { top, confidence } = response.data;
-                const result = confidence > 0.8 ? response.data : "null";
+                //const { top, confidence } = response.data;
+                //const result = confidence > 0.8 ? response.data : "null";
 
         // Send the processed result to the client
         res.send(result);
