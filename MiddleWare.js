@@ -62,7 +62,6 @@ const LoginUser = async (req, res) => {
                         const token = jwt.sign(
                             { userId: updatedUser._id, adminRole: updatedUser.adminRole },
                             secretkey,
-                            { expiresIn: '1h' }
                         );
 
                         // Set the token in a cookie
@@ -77,7 +76,7 @@ const LoginUser = async (req, res) => {
                     } else {
                         return res.json({
                             status: 'FAILED',
-                            message: 'Invalid password entered!'
+                            message: 'Invalid password or email entered!'
                         });
                     }
                 }

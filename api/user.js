@@ -549,6 +549,23 @@ router.post('/ocr',upload.single("image"), async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+// Modify the response data
+/*const modifiedResponse = {
+    ...response.data,
+    value: response.data.value.split('\n')[0] // Keep only the part before the newline character
+  };
+
+  console.log(modifiedResponse); // Log the modified response data
+  res.send(modifiedResponse); // Send the modified response data to the client
+} catch (error) {
+  console.error(error);
+  res.status(500).send('Internal Server Error');
+}
+});
+*/
+
+
 //----------------------------------------------------------------------------
 //Face Swap
 // Replace with your imgbb API key
