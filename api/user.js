@@ -387,7 +387,7 @@ router.post('/signin', (req,res)=>{
                         if(result){
                             //password match 
                             const secretKey = "OAABB"
-                            const token = jwt.sign({ userId: data[0]._id }, secretKey, { expiresIn: '1h' });
+                            const token = jwt.sign({ userId: data[0]._id }, secretKey);
                             console.log(token)
                             //console.log(userId)
                             console.log(data[0]._id)
@@ -535,7 +535,7 @@ router.post('/ocr',upload.single("image"), async (req, res) => {
         method: 'POST',
         url: 'https://pen-to-print-handwriting-ocr.p.rapidapi.com/recognize/',
         headers: {
-          'x-rapidapi-key': '15ff027daamshe9b696d3d9378b2p17dfc9jsnca292b160be3',
+          'x-rapidapi-key': '499473221emsh3ac838664889174p12fadejsn32a397679c44',
           'x-rapidapi-host': 'pen-to-print-handwriting-ocr.p.rapidapi.com',
           ...data.getHeaders(),
         },
@@ -619,7 +619,7 @@ const uploadToImgbb = async (filePath) => {
     fs.unlinkSync(req.files['SourceImage'][0].path);
   }
 });*/
-router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
+/*router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
   try {
     const targetImage = req.files['TargetImage'][0];
     const sourceImage = req.files['SourceImage'][0];
@@ -653,7 +653,45 @@ router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'Source
     fs.unlinkSync(targetImage.path);
     fs.unlinkSync(sourceImage.path);
   }
-});
+});*/
+
+
+
+router.post('/faceswap', upload.fields([{ name: 'TargetImage' }, { name: 'SourceImage' }]), async (req, res) => {
+    try {
+      const targetImage = req.files['TargetImage'][0];
+      const sourceImage = req.files['SourceImage'][0];
+  
+      const targetImageUrl = await uploadToImgbb(targetImage.path);
+      const sourceImageUrl = await uploadToImgbb(sourceImage.path);
+  
+      const options = {
+        method: 'POST',
+        url: 'https://faceswap-image-transformation-api.p.rapidapi.com/faceswapgroup',
+        headers: {
+          'x-rapidapi-key': '499473221emsh3ac838664889174p12fadejsn32a397679c44',
+          'x-rapidapi-host': 'faceswap-image-transformation-api.p.rapidapi.com',
+          'Content-Type': 'application/json'
+        },
+        data: {
+          TargetImageUrl: targetImageUrl,
+          SourceImageUrl: sourceImageUrl,
+          MatchGender: true,
+          MaximumFaceSwapNumber: 5
+        }
+      };
+  
+      const response = await axios.request(options);
+      res.json(response.data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred while processing the request' });
+    } finally {
+      // Clean up uploaded files
+     fs.unlinkSync(req.files['TargetImage'][0].path);
+     fs.unlinkSync(req.files['SourceImage'][0].path);
+    }
+  });
 
 module.exports = router;
 
